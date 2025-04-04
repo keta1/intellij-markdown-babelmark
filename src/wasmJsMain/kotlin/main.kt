@@ -1,3 +1,4 @@
+import icu.ketal.markdown.babelmark.BuildKonfig
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
@@ -44,8 +45,8 @@ fun fetch(request: Request): Response {
     val html = HtmlGenerator(text, parsedTree, flavour).generateHtml()
     val result = MarkdownResult(
         html = html,
-        name = "intellij-markdown-gfm",
-        version = "0.7.3"
+        name = "intellij-markdown-${mode.ifBlank { "commonmark" }}",
+        version = BuildKonfig.markdown_version
     )
     return Response(
         Json.encodeToString(result).toJsString(),

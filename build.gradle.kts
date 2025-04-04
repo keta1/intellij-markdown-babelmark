@@ -1,22 +1,15 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.ir.Executable
 
 plugins {
-    kotlin("multiplatform") version "2.1.20"
-    kotlin("plugin.serialization") version "2.1.20"
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.kotlinSerialization)
+    id("com.codingfeline.buildkonfig") version "0.17.0"
 }
-
-group = "org.example"
-version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-browser-wasm-js:0.3")
-    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
-    commonMainImplementation("org.jetbrains:markdown:0.7.3")
 }
 
 kotlin {
@@ -63,5 +56,21 @@ kotlin {
                         }
                     }
             }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.browser)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.markdown)
+        }
+    }
+}
+
+buildkonfig {
+    packageName = "icu.ketal.markdown.babelmark"
+
+    defaultConfigs {
+        buildConfigField(STRING, "markdown_version", libs.versions.markdown.get())
     }
 }
