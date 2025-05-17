@@ -43,6 +43,8 @@ fun fetch(request: Request): Response {
 
     val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(text)
     val html = HtmlGenerator(text, parsedTree, flavour).generateHtml()
+        .substringAfter("<body>")
+        .substringBeforeLast("</body>")
     val result = MarkdownResult(
         html = html,
         name = "intellij-markdown-${mode.ifBlank { "commonmark" }}",
